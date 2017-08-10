@@ -33,13 +33,17 @@ import java.util.*;
  * The class should be used for memory-intensive state grids that
  * are rarely references (so that performance isn't critical), such
  * as LinearSystemState.
+ * <p>
+ * Modified by John Clark (jc) as part of Java 4 Homework 2.  The modification
+ * replaced all usage of the Vector class with the ArrayList class.
  * 
  * @param <E> the type of the object to be stored
+ * @author joclark
+ * 
  */
-
-//jc:
-//public class StateStack extends Vector {
 public class StateStack<E> extends ArrayList<E> {
+	//jc: Modified StateStack to now inherit from ArrayList, rather than Vector
+	//Previous class declaration: public class StateStack extends Vector {
 
     int nMovesStored ;
     
@@ -47,20 +51,26 @@ public class StateStack<E> extends ArrayList<E> {
     
     /**
      * Creates a StateStack to store at most maxMoves moves. 
+     * 
+     * @param maxMoves maximum number of elements to be in the ArrayList
      */
 
     public StateStack( int maxMoves ){
         nMovesStored = 0 ;
         moves = new int[maxMoves];
-        // jc:
+        // jc: Replace Vector method setSize with ArrayList method ensureCapacity
         //setSize( maxMoves );
         ensureCapacity(maxMoves);
     }
     
     /**
+     * Adds a state grid to the thread.
+     * 
+     * @param obj the ArrayList element being pushed onto the stack
+     * @param nMoves thread position from which state should be read
      * @see com.act365.sudoku.IState#pushState(int)
      */
-    // jc:
+    // jc: Updated pushState to allow a generic obj to be pushed onto the stack
     //public void pushState( Object obj , int nMoves ) {
     public void pushState( E obj , int nMoves ) {
         int i = 0 ;
@@ -68,28 +78,31 @@ public class StateStack<E> extends ArrayList<E> {
             ++ i ;   
         }
         if( i < nMovesStored ){
-        	// jc:
+        	// jc: Replace Vector method setElementAt with ArrayList method set
             //setElementAt( obj , i ); 
         	set(i, obj);  
         } else {
-        	// jc:
+        	// jc: Replace Vector method addElement with ArrayList method add
             //addElement( obj );
         	add(obj);
             moves[nMovesStored++] = nMoves ;
         }
     }    
-
+       
     /**
+     * Unwinds a state grid from the thread.
+     * 
+     * @param nMoves thread position from which state should be read
+     * @return the ArrayList element at the specified location
      * @see com.act365.sudoku.IState#popState(int)
      */
-        
     public Object popState( int nMoves ) {
         int i = 0 ;
         while( i < nMovesStored && moves[i] != nMoves ){
             ++ i ;   
         }
         if( i < nMovesStored ){
-        	// jc:
+        	// jc: Replace Vector method elementAt with ArrayList method get
             //return elementAt( i );
             return get(i);
         } else {

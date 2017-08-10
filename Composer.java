@@ -35,6 +35,10 @@ import java.util.* ;
  * A Composer object attempts to compose valid Su Doku puzzles with the
  * MostCandidates strategy. It runs as a thread because composition is
  * a lengthy process that the caller might well choose to terminate.
+ * 
+ * <p>
+ * Modified by John Clark (jc) as part of Java 4 Homework 2.  The modification
+ * replaced all usage of the Vector class with the ArrayList class.
  */
 
 public class Composer extends Thread {
@@ -434,6 +438,7 @@ public class Composer extends Thread {
      * a fixed initial mask.
      * @see Solver
      * @param solverIndex index of solver to restart with a new mask
+     * @return false if NoSuchElementException occurs, otherwise returns true
      */
     
     synchronized boolean startThread( int solverIndex ){

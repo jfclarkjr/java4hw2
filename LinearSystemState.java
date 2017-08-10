@@ -28,6 +28,11 @@ package com.act365.sudoku;
 /**
  * LinearSystemState stores the system of linear equations defined by
  * the Sudoku puzzle.
+ *  * <p>
+ * Modified by John Clark (jc) as part of Java 4 Homework 2.  The modification
+ * Updated StateStack declarations to work with generic types.
+ * 
+ * @author joclark
  */
 
 public class LinearSystemState implements IState {
@@ -42,7 +47,8 @@ public class LinearSystemState implements IState {
 
     // Thread
     
-    // jc:
+    // jc: Updated StateStack declaration to work with generic types
+    //     In this case we're declaring it with byte[][][] array
     //StateStack stack ;
     StateStack<byte[][][]> stack ;
     
@@ -58,6 +64,10 @@ public class LinearSystemState implements IState {
     public static int defaultDisplayFormat = EQUATIONS ;
         
 	/**
+	 * Sets up the state grid and its thread.
+	 * 
+	 * @param boxesAcross the number of boxes to appear across one row of the Su Doku grid
+	 * @param boxesDown the number of boxes to appear down one column of the Su Doku grid
 	 * @see com.act365.sudoku.IState#setup(int, int)
 	 */
      
@@ -70,7 +80,7 @@ public class LinearSystemState implements IState {
         a = new byte[cellsInRow][3*cellsInRow][1+cellsInRow*cellsInRow];
         nRows = new int[cellsInRow];
 
-        // jc:
+        // jc: Updated new StateStack initialization to work with generic types
         //stack = new StateStack( cellsInRow * cellsInRow );
         stack = new StateStack<byte[][][]>( cellsInRow * cellsInRow );
         threadNRows = new int[cellsInRow*cellsInRow][cellsInRow];
@@ -129,6 +139,9 @@ public class LinearSystemState implements IState {
 	}
 
 	/**
+     * Adds a state grid to the thread.
+     * 
+     * @param nMoves thread position to which state should be written
 	 * @see com.act365.sudoku.IState#pushState(int)
 	 */
      
@@ -159,6 +172,9 @@ public class LinearSystemState implements IState {
 	}
 
     /**
+     * Unwinds a state grid from the thread.
+     * 
+     * @param nMoves thread position from which state should be read
      * @see com.act365.sudoku.IState#popState(int)
      */
      	
@@ -184,7 +200,12 @@ public class LinearSystemState implements IState {
 	}
 
 	/** 
-     * Adds the constraint (x,y):=v to the system and reduces. 
+     * Adds the constraint (x,y):=v to the system and reduces.
+     * 
+     * @param x the horizontal coordinate of the move
+     * @param y the vertical coordinate of the move
+     * @param v value for which the system is to be reduced
+     * @throws MoveException the base class for all exceptions associated with the move (x,y)
 	 * @see com.act365.sudoku.IState#addMove(int, int, int)
 	 */
     
@@ -246,6 +267,12 @@ public class LinearSystemState implements IState {
 	}
 
 	/** 
+	 * Updates the state grid to account for the fact that the 
+     * move (x,y):=v has been eliminated as a possibility.
+	 * 
+	 * @param x the horizontal coordinate of the move
+     * @param y the vertical coordinate of the move
+     * @param v value for which the system is to be reduced
 	 * @see com.act365.sudoku.IState#eliminateMove(int, int, int)
 	 */
      
